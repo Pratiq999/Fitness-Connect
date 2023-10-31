@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@if (ViewBag.ExerciseData != null && ViewBag.ExerciseData.Count > 0)
+{
+    <div class="container">
+        <div class="row">
+            @for (var i = 0; i < ViewBag.ExerciseData.Count; i++)
+            {
+                ExerciseModel exercise = ViewBag.ExerciseData[i];
+                
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5>@exercise.Name</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Type:</strong> @exercise.Type</p>
+                            <p><strong>Muscle:</strong> @exercise.Muscle</p>
+                            <p><strong>Equipment:</strong> @exercise.Equipment</p>
+                            <p><strong>Difficulty:</strong> @exercise.Difficulty</p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary" data-toggle="collapse" data-target="#instructions-@i">Instructions</button>
+                            <div id="instructions-@i" class="collapse">
+                                <p>@exercise.Instructions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <p>No data available.</p>
+}

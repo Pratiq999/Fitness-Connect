@@ -4,6 +4,8 @@ using FitnessConnect.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
 
 namespace FitnessConnect.Controllers
 {
@@ -59,5 +61,26 @@ namespace FitnessConnect.Controllers
         {
             return View();
         }
+
+        public async Task<IActionResult> GenerateExercise(string name, string type, string muscle, string difficulty, CancellationToken token)
+        {   
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Add("X-Api-Key", "kjObhgIO6kctyWA/DIdERw==m6lqeAwzTqk1jJZD");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
+            var response = await httpClient.GetStringAsync("https://api.api-ninjas.com/v1/exercises", token);
+            var data = JsonConvert.DeserializeObject<List<ExerciseModel>>(response);
+            if (data != null) ViewBag.ExerciseData = data;
+            return View();
+        }
     }
+}
+
+public class ExerciseModel
+{
+    public string Name { get; set; }
+    public string Type { get; set; }
+    public string Muscle { get; set; }
+    public string Equipment { get; set; }
+    public string Difficulty { get; set; }
+    public string Instructions { get; set; }
 }

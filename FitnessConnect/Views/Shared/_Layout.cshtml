@@ -166,7 +166,7 @@
                         else
                         {
                             <button class="proImgNav avatarlogo" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                @user?.FirstName[0]@user?.LastName[0]
+                                @user?.FirstName?[0]@user?.LastName?[0]
                             </button>
                         }
                         <ul class="dropdown-menu">
@@ -221,7 +221,7 @@
                                 else
                                 {
                                     <button class="proImgNav avatarlogo" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        @user?.FirstName[0]@user?.LastName[0]
+                                        @user?.FirstName?[0]@user?.LastName?[0]
                                     </button>
                                 }
                                 <ul class="dropdown-menu w-auto">

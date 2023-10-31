@@ -1,66 +1,133 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var exerciseTypes = new string[] { "cardio", "olympic_weightlifting", "plyometrics", "powerlifting", "strength", "stretching", "strongman" };
+    var bodyParts = new string[] { "abdominals", "abductors", "adductors", "biceps", "calves", "chest", "forearms", "glutes", "hamstrings", "lats", "lower_back", "middle_back", "neck", "quadriceps", "traps", "triceps" };
+    var skillLevels = new string[] { "beginner", "intermediate", "expert" };
+
+    string ToReadableString(string input)
+    {
+        // Split the string by underscore
+        var parts = input.Split('_');
+
+        // Capitalize the first letter of each word and join them with space
+        var result = string.Join(" ", parts.Select(s => char.ToUpper(s[0]) + s.Substring(1)));
+
+        return result;
+    }
+
 }
 
 <div class="text-center">
-    
-<!-- Hero Section -->
-<section class="hero-section text-center">
-    <div class="container">
-        <h1 class="display-4">Welcome to Fitness Connect</h1>
-        <p class="lead">Connect with fitness enthusiasts, track your progress, and achieve your fitness goals!</p>
-        <a href="#" class="btn btn-primary btn-lg">Get Started</a>
-    </div>
-</section>
-<!-- Exercise View -->
-<section class="exercise-view-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <h2 class="text-center">Generated Exercise View</h2>
-                <div class="card">
-                    <img src="https://via.placeholder.com/600" class="card-img-top" alt="Exercise Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Exercise Name</h5>
-                        <p class="card-text">Description of the exercise goes here. This is a brief explanation of how to perform the exercise and its benefits.</p>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><strong>Category:</strong> Strength Training</li>
-                            <li class="list-group-item"><strong>Difficulty:</strong> Intermediate</li>
-                            <li class="list-group-item"><strong>Duration:</strong> 15 minutes</li>
-                        </ul>
-                        <a href="#" class="btn btn-primary mt-3">Start Exercise</a>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-4">Welcome to Fitness Connect</h1>
+            <p class="lead">Connect with fitness enthusiasts, track your progress, and achieve your fitness goals!</p>
+        </div>
+    </section>
+    <!-- Exercise View -->
+    <section class="exercise-view-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card">
+                        <div class="card-body text-left">
+                            <form asp-action="GenerateExercise" method="post">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name</label>
+                                    <input type="text" name="name" class="form-control" id="name" aria-describedby="emailHelp">
+                                    <div id="emailHelp" class="form-text">Name of exercise. This value can be partial (e.g. press will match Dumbbell Bench Press)</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="type" class="form-label">Exercise Type</label>
+                                    <select id="type" name="type" class="form-select" aria-label="type" aria-describedby="selectTypeDescription">
+                                        <option selected>Select Type</option>
+                                        @foreach (var type in exerciseTypes)
+                                        {
+                                            <option value="@type">@ToReadableString(type)</option>
+                                        }
+                                    </select>
+                                    <div id="selectTypeDescription" class="form-text">Muscle group targeted by the exercise.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="bodyParts" class="form-label">Body Parts</label>
+
+                                    <select id="bodyParts" name="muscle" class="form-select" aria-label="type" aria-describedby="bodyPartsDescription">
+                                        <option selected>Select Body Parts</option>
+                                        @foreach (var type in bodyParts)
+                                        {
+                                            <option value="@type">@ToReadableString(type)</option>
+                                        }
+                                    </select>
+
+                                    <div id="bodyPartsDescription" class="form-text">Muscle group targeted by the exercise.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="SkillLevels" class="form-label">Body Parts</label>
+
+                                    <select name="difficulty" class="form-select" aria-label="type" id="SkillLevels" aria-describedby="SkillLevelsDescription">
+                                        <option selected>Select Skill Levels</option>
+                                        @foreach (var type in skillLevels)
+                                        {
+                                            <option value="@type">@ToReadableString(type)</option>
+                                        }
+                                    </select>
+                                    <div id="SkillLevelsDescription" class="form-text">difficulty level of the exercise.</div>
+
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<!-- Features Section -->
-<section class="features-section">
-    <div class="container">
+    </section>
+
+    <style>
+    .text-left {
+        text-align: left;
+    }
+    
+    .mt-12 {
+    margin-top: 4rem;
+    }
+</style>
+
+    <!-- Features Section -->
+    <section class="features-section mt-12">
+      <div class="container">
         <div class="row">
-            <div class="col-lg-4">
-                <div class="feature-box text-center">
-                    <i class="bi bi-person"></i>
-                    <h3>User Profiles</h3>
-                    <p>Create your personalized fitness profile and share your achievements with the community.</p>
-                </div>
+          <!-- User Profiles -->
+          <div class="col-lg-4">
+            <div class="feature-box text-center">
+              <i class="bi bi-person"></i>
+              <h3>User Profiles</h3>
+              <p>Create your personalized fitness profile and share your achievements with the community.</p>
             </div>
-            <div class="col-lg-4">
-                <div class="feature-box text-center">
-                    <i class="bi bi-heart"></i>
-                    <h3>Track Progress</h3>
-                    <p>Track your fitness journey with our easy-to-use progress tracking tools.</p>
-                </div>
+          </div>
+          
+          <!-- Track Progress -->
+          <div class="col-lg-4">
+            <div class="feature-box text-center">
+              <i class="bi bi-heart"></i>
+              <h3>Track Progress</h3>
+              <p>Track your fitness journey with our easy-to-use progress tracking tools.</p>
             </div>
-            <div class="col-lg-4">
-                <div class="feature-box text-center">
-                    <i class="bi bi-chat"></i>
-                    <h3>Community Chat</h3>
-                    <p>Connect with other fitness enthusiasts, share tips, and motivate each other.</p>
-                </div>
+          </div>
+          
+          <!-- Community Chat -->
+          <div class="col-lg-4">
+            <div class="feature-box text-center">
+              <i class="bi bi-chat"></i>
+              <h3>Community Chat</h3>
+              <p>Connect with other fitness enthusiasts, share tips, and motivate each other.</p>
             </div>
+          </div>
+          
         </div>
-    </div>
-</section>
+      </div>
+    </section>
+
 </div>
