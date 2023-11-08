@@ -9,28 +9,86 @@
             @for (var i = 0; i < ViewBag.ExerciseData.Count; i++)
             {
                 ExerciseModel exercise = ViewBag.ExerciseData[i];
-                
+
                 <div class="col-md-4">
                     <div class="card mb-4">
                         <div class="card-header">
                             <h5>@exercise.Name</h5>
                         </div>
                         <div class="card-body">
-                            <p><strong>Type:</strong> @exercise.Type</p>
-                            <p><strong>Muscle:</strong> @exercise.Muscle</p>
-                            <p><strong>Equipment:</strong> @exercise.Equipment</p>
-                            <p><strong>Difficulty:</strong> @exercise.Difficulty</p>
+                            <p>
+                                <strong>Type:</strong> @exercise.Type
+                            </p>
+                            <p>
+                                <strong>Muscle:</strong> @exercise.Muscle
+                            </p>
+                            <p>
+                                <strong>Equipment:</strong> @exercise.Equipment
+                            </p>
+                            <p>
+                                <strong>Difficulty:</strong> @exercise.Difficulty
+                            </p>
                         </div>
                         <div class="card-footer">
-                            <button class="btn btn-primary" data-toggle="collapse" data-target="#instructions-@i">Instructions</button>
-                            <div id="instructions-@i" class="collapse">
+                            <button class="btn btn-primary" 
+                                    data-toggle="collapse"
+                                    data-type="@exercise.Type" 
+                                    data-muscle="@exercise.Muscle"
+                                    data-equipment="@exercise.Equipment"
+                                    data-difficulty="@exercise.Difficulty"
+                                    onclick="handleOnClick(event)"
+                                    data-video-target="video-results-@i"
+                                    data-target="#instructions-@i">Instructions And Video</button>
+                            <div id="instructions-@i" class="collapse mt-2">
                                 <p>@exercise.Instructions</p>
+                                
+                                <div id="video-results-@i">
+                                    Videos are loading
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             }
         </div>
+        <script >
+            const API_KEY = 'AIzaSyCKkz34BvsL1k6eE7c1R6hX3iqdJyyS0p8';
+            
+            function handleOnClick(event) {
+                const { type, muscle, equipment, difficulty } = event.target.dataset;
+                
+                getVideoRelatedToIt(`${ type } ${ muscle }`).then(docs => {
+                   
+                    
+                    document.getElementById(event.target.dataset.videoTarget).innerHTML = docs.map(doc => `
+<iframe width="400" height="230" src="https://www.youtube.com/embed/${ doc.id }" title="Embed videos and playlists" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    `).join('');
+                })
+            }
+        
+            Array.from(document.querySelectorAll('[data-toggle="collapse"]')).map(element =>{
+                return element.addEventListener('click', (evt) => {
+                    const target = evt.target
+                    document.querySelector(target.dataset.target).classList.toggle('show');
+                });
+            }); 
+            
+            function getVideoRelatedToIt(query) {
+                return fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&order=viewCount&q=${ encodeURIComponent(query) }&type=video&videoDefinition=high&key=${ API_KEY }`)
+                    .then(docs => docs.json())
+                    .then(docs => {
+                        return docs.items.map(item => ({
+                            id: item.id.videoId,
+                            title: item.snippet.title,
+                            description: item.snippet.description,
+                        }))
+                    })
+            }
+             
+        </script>
+
+        <script src="https://apis.google.com/js/api.js"></script>
+
     </div>
 }
 else

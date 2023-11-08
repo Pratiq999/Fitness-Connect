@@ -15,8 +15,9 @@ namespace FitnessConnect.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ICommonRepository _commonrepo;
         private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _environment;
-        
-        public HomeController(ILogger<HomeController> logger, ICommonRepository commonrepo, Microsoft.AspNetCore.Hosting.IHostingEnvironment environment)
+
+        public HomeController(ILogger<HomeController> logger, ICommonRepository commonrepo,
+            Microsoft.AspNetCore.Hosting.IHostingEnvironment environment)
         {
             _commonrepo = commonrepo;
             _environment = environment;
@@ -38,10 +39,12 @@ namespace FitnessConnect.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
         public IActionResult ContactUs()
         {
             return View();
         }
+
         [HttpPost]
         public IActionResult ContactUs(Contact contact)
         {
@@ -55,19 +58,21 @@ namespace FitnessConnect.Controllers
                 _commonrepo.AddLogger("Home", "ContactUs", ex.Message);
                 return null;
             }
-
         }
+
         public IActionResult AboutUs()
         {
             return View();
         }
 
-        public async Task<IActionResult> GenerateExercise(string name, string type, string muscle, string difficulty, CancellationToken token)
-        {   
+        public async Task<IActionResult> GenerateExercise(string name, string type, string muscle, string difficulty,
+            CancellationToken token)
+        {
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Add("X-Api-Key", "kjObhgIO6kctyWA/DIdERw==m6lqeAwzTqk1jJZD");
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
-            var response = await httpClient.GetStringAsync("https://api.api-ninjas.com/v1/exercises", token);
+            var response = await httpClient.GetStringAsync(
+                "https://api.api-ninjas.com/v1/exercises?name=" + name, token);
             var data = JsonConvert.DeserializeObject<List<ExerciseModel>>(response);
             if (data != null) ViewBag.ExerciseData = data;
             return View();
