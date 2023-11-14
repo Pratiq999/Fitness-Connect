@@ -5,6 +5,8 @@ VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessConnect", "FitnessConnect\FitnessConnect.csproj", "{57F99234-8295-4604-8B4A-3135B5E4AAA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessConnectTest", "FitnessConnectTest\FitnessConnectTest.csproj", "{80A41C64-AE6F-41CD-9D58-9D3AFD1A8291}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{57F99234-8295-4604-8B4A-3135B5E4AAA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57F99234-8295-4604-8B4A-3135B5E4AAA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57F99234-8295-4604-8B4A-3135B5E4AAA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80A41C64-AE6F-41CD-9D58-9D3AFD1A8291}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80A41C64-AE6F-41CD-9D58-9D3AFD1A8291}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80A41C64-AE6F-41CD-9D58-9D3AFD1A8291}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80A41C64-AE6F-41CD-9D58-9D3AFD1A8291}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

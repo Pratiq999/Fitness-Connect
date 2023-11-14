@@ -48,16 +48,11 @@ namespace FitnessConnect.Controllers
                 {
                     var changePasswordResult = await _userManager.ChangePasswordAsync(user, pwdDetails[0], pwdDetails[1]);
 
-                    if (changePasswordResult.Succeeded)
-                    {
+                    return Ok(changePasswordResult.Succeeded ?
                         // Password changed successfully
-                        return Ok("Success");
-                    }
-                    else
-                    {
+                        "Success" :
                         // Failed to change password
-                        return Ok("Failed to change password");
-                    }
+                        "Failed to change password");
                 }
                 else
                 {

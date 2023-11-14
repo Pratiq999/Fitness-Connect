@@ -1,10 +1,9 @@
-﻿using FitnessConnect.Areas.Identity.Data;
+﻿using System.Diagnostics;
+using FitnessConnect.Areas.Identity.Data;
 using FitnessConnect.Interfaces;
 using FitnessConnect.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using System.Net.Http.Headers;
 using Newtonsoft.Json;
 
 namespace FitnessConnect.Controllers
@@ -14,13 +13,10 @@ namespace FitnessConnect.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ICommonRepository _commonrepo;
-        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _environment;
-
-        public HomeController(ILogger<HomeController> logger, ICommonRepository commonrepo,
-            Microsoft.AspNetCore.Hosting.IHostingEnvironment environment)
+        
+        public HomeController(ILogger<HomeController> logger, ICommonRepository commonrepo)
         {
             _commonrepo = commonrepo;
-            _environment = environment;
             _logger = logger;
         }
 
@@ -71,8 +67,33 @@ namespace FitnessConnect.Controllers
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Add("X-Api-Key", "kjObhgIO6kctyWA/DIdERw==m6lqeAwzTqk1jJZD");
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
+
+            var valueQuery = new List<string>();
+
+            if (name != "")
+            {
+                valueQuery.Add("name=" + name);
+            }
+
+            if (type != "")
+            {
+                valueQuery.Add("type=" + type);
+            }
+
+            if (muscle != "")
+            {
+                valueQuery.Add("muscle=" + muscle);
+            }
+
+            if (difficulty != "")
+            {
+                valueQuery.Add("difficulty=" + difficulty);
+            }
+
+            var query = string.Join("&", valueQuery);
+            
             var response = await httpClient.GetStringAsync(
-                "https://api.api-ninjas.com/v1/exercises?name=" + name, token);
+                "https://api.api-ninjas.com/v1/exercises?" + query, token);
             var data = JsonConvert.DeserializeObject<List<ExerciseModel>>(response);
             if (data != null) ViewBag.ExerciseData = data;
             return View();
